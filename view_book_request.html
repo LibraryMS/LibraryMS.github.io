@@ -1,0 +1,99 @@
+{%if session["role"] == 'admin'%}
+    {%include "admin_head.html" %}
+{%endif%}
+{%if session["role"] == 'librarian'%}
+    {%include "librarian_head.html" %}
+{%endif%}
+{%if session["role"] == 'member'%}
+    {%include "member_head.html" %}
+{%endif%}
+<div class="container-fluid">
+    <div class="row">
+         {% for transaction in transactions: %}
+                {%set book=get_book_by_book_id(transaction['book_id'])%}
+                {%set member=get_member_by_member_id(transaction['member_id'])%}
+                {% set fine = get_fine_by_transaction_id(transaction['_id']) %}
+                {% set payment = has_paid(transaction['_id']) %}
+                <div class="card mt-2 p-2">
+                    <div class="row">
+                        <div class="col-md-3 p-2">
+                        <div class="text-center"><img src="../static/books/{{book['book_image']}}" style="height:120px;overflow:auto"></div>
+                        <div class="text-center">{{book['book_name']}}</div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        Status:{{transaction['status']}}
+                        {% if 'book_copy' in transaction %}
+                            <div>Book Copy Number: <strong>{{transaction['book_copy']}}</strong></div>
+                        {% endif %}
+                        {% if fine!=0 %}
+                        <div>fine: <strong>$ {{fine}}</strong></div>
+                        {% endif %}
+                        {% if payment!=None %}
+                            <div class="col-md-4 text-center"><a href="/view_payments?transaction_id={{transaction['_id']}}"><input type="submit" value="Paid Details" class="btn btn-success w-100"></a>
+                                    </div>
+                        {% endif %}
+                        {% if transaction['status']=='Reserved'%}
+                            {% set reservation = get_reservation(transaction['_id']) %}
+                            <div class="col-md-4">
+                                <div>{{reservation['date']}}</div>
+                                <div>{{reservation['status']}}</div>
+                            </div>
+                        {%endif%}
+                        {% if transaction['status']=='Reserved'%}
+                            <div class="text-center"><a href="/delete_reserved?transaction_id={{transaction['_id']}}"><input type="submit" value="Delete Reservation" class="btn btn-danger w-50"></a></div>
+                        {%endif%}
+
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div><h5>Book Details</h5></div>
+                        <div>Book author:{{book['book_author']}}</div>
+                        <div>Book price:{{book['book_price']}}</div>
+                        <div class="">Book publisher:{{book['book_publisher']}}</div>
+                        <div>Book Description:</div>
+                        <div class="">{{book['book_description']}}</div>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <div><h5>Member Details</h5></div>
+                        <div>Name:{{member['name']}}</div>
+                        <div>Email:{{member['email']}}</div>
+                        <div>Phone:{{member['phone']}}</div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        {% if session['role']=='member'%}
+                            {% if transaction['status']=='Request Sent'%}
+                                <div class="col-md-4 text-center"><a href="/cancel_request?transaction_id={{transaction['_id']}}"><input type="submit" value="Cancel" class="btn btn-danger w-50"></a></div>
+                            {%endif%}
+                            {% if transaction['status']=='book assigned'%}
+                                    <div class="col-md-4 text-center"><a href="/return_book?transaction_id={{transaction['_id']}}&fine={{fine}}"><input type="submit" value="Return" class="btn btn-success w-50"></a>
+                                    </div>
+                            {%endif%}
+                        {% if transaction['status']=='return accepted'%}
+                        <div class="col-md-4 text-center"><a href="/fine?transaction_id={{transaction['_id']}}"></a>
+                                </div>
+                        {%endif%}
+
+                        {%endif%}
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                            {% if session['role']=='librarian'%}
+                                {% if transaction['status']=='Request Sent'%}
+                                    <div class="col-md-4 text-center"><a href="/assign_book_copies?book_id={{book['_id']}}&transaction_id={{transaction['_id']}}"><input type="submit" value="Assign" class="btn btn-success w-50"></a></div>
+                                {%endif%}
+
+                                {% if transaction['status']=='book return requested'%}
+                                        <div class="col-md-4 text-center"><a href="/accept?transaction_id={{transaction['_id']}}"><input type="submit" value="Accept" class="btn btn-success w-50"></a>
+                                        </div>
+                                {%endif%}
+                            {%endif%}
+                        </div>
+
+                    </div>
+
+                </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,93 @@
+{% include "admin_head.html" %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-3 mt-5">
+                <form action="add_book1" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-sm-6 mt-3">
+                            <b><label>Location Name</label></b>
+                            <select name="location_id" id="location_id"  class="form-control mt-2" >
+                                <option value="Choose Location">Choose Location</option>
+                                    {% for location in locations: %}
+                                        <option value="{{location[_id]}}">{{location['location_name']}}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6 mt-3 ">
+                            <b><label>Book Name</label></b>
+                            <input type="text" id="book_name" name="book_name" class="form-control mt-2" placeholder="Enter Book Name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mt-3 ">
+                            <b><label>Image</label></b>
+                            <input type="file" id="book_image" name="book_image" class="form-control mt-2" >
+                        </div>
+                        <div class="col-sm-6 mt-3 ">
+                            <b><label>Author</label></b>
+                            <input type="text" id="book_author" name="book_author" class="form-control mt-2" placeholder="Enter Book Author">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mt-3 ">
+                            <b><label>Publisher</label></b>
+                            <input type="text" id="book_publisher" name="book_publisher" class="form-control mt-2" placeholder="Enter Book Publisher">
+                        </div>
+                        <div class="col-sm-6 mt-3">
+                            <b><label>Price</label></b>
+                            <input type="text" id="book_price" name="book_price" class="form-control mt-2" placeholder="Enter Book Price">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" col-sm-6 mt-3 ">
+                            <b><label>Description</label></b>
+                            <input type="text" id="book_description" name="book_description" class="form-control mt-2" placeholder="Enter Book Description">
+                        </div>
+                        <div class="mt-4 p-3 text-center col-sm-6">
+                            <input type="submit" value="Add Book" class="btn btn-success w-100 mt-1">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            {%if session["role"] == 'librarian'%}
+                {%include "librarian_head.html" %}
+            {%endif%}
+            {%if session["role"] == 'member'%}
+                {%include "member_head.html" %}
+            {%endif%}
+            {% for book in books: %}
+                <div class="col-md-4">
+                    <div class="card mt-2 p-2">
+                        <div class="text-center"><b>{{book['book_name']}}</b></div>
+                        <div class="text-center"><img src="../static/books/{{book['book_image']}}" style="height:120px;overflow:auto"></div>
+                        <div class="mt-3"><b>Author: </b>{{book['book_author']}}</div>
+                        <div><b>Price: $</b>{{book['book_price']}}</div>
+                        <div><b>Publisher: </b>{{book['book_publisher']}}</div>
+                        <div><b>Description: </b>{{book['book_description']}}</div>
+                        <div class="row">
+                            {%if session['role']=='librarian'%}
+                                <div class="col-md-5 p-2">
+                                    <a href="/add_book_copies?book_id={{book['_id']}} ">
+                                        <input type="submit" value="Add  Copies" class="btn btn-primary w-100 text-center"><br>
+                                    </a>
+                                </div>
+                                <div class="col-md-5 p-2">
+                                    <a href="/view_book_copies?book_id={{book['_id']}}">
+                                        <input type="submit" value="View Copies" class="btn btn-success w-100 text-center"><br>
+                                    </a>
+                                </div>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+

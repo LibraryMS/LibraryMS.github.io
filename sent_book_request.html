@@ -1,0 +1,40 @@
+{% include "member_head.html" %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <input type="hidden" name="book_d" value="{{book_id}}">
+            <div class="">
+                <div class="text-center h4 mt-3">Choose Library</div>
+                <table class="table table-bordered mt-3">
+                    <thead class="table-success">
+                        <tr class="">
+                            <th >Location</th>
+                            <th>Librarian</th>
+                            <th>Librarian Number</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book_copy in book['book_copies'] %}
+                            {% set librarian,location = get_librarian_by_librarian_id(book_copy) %}
+                            {% set is_book_available = check_is_book_available2(book['_id'],book_copy) %}
+                            <tr>
+                                <td>{{location['location_name']}}</td>
+                                <td>{{librarian["name"]}}</td>
+                                <td>{{librarian["phone"]}}</td>
+                                {% if is_book_available %}
+                                    <td><a href="/librarian_send_request?book_id={{book['_id']}}&librarian_id={{librarian['_id']}}" class="btn btn-primary btn-sm">Send Request</a></td>
+                                {% else %}
+                                    <td>
+                                        <div>Book is Not Available</div>
+                                        <a href="/librarian_reserve_bool?book_id={{book['_id']}}&librarian_id={{librarian['_id']}}" class="btn btn-primary btn-sm">Reserve Book</a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

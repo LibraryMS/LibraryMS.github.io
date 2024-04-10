@@ -1,0 +1,20 @@
+{%include "admin_head.html"%}
+<div class="container-fluid mt-3 p-11" xmlns:width="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        <div class="col-md-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card p-3" width: 100% >
+                <form action="locations">
+                    <ul style="height:40vh;overflow:auto" class="list-group">
+                       {% for location in locations: %}
+                            <li class="list-group-item">{{location['location_name']}}</li>
+                        {% endfor %}
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+

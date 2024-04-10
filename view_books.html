@@ -1,0 +1,40 @@
+{%if session["role"] == 'librarian'%}
+    {%include "librarian_head.html" %}
+{%endif%}
+{%if session["role"] == 'member'%}
+    {%include "member_head.html" %}
+{%endif%}
+
+  <div class="container">
+        <div class="row">
+            {% for book in books: %}
+                <div class="col-md-3">
+                    <div class="card mt-2 p-2">
+                        <div class="text-center"><b>{{book['book_name']}}</b></div>
+                        <div class="text-center"><img src="../static/books/{{book['book_image']}}" style="height:120px;overflow:auto"></div>
+                        <div class="mt-3"><b>Author: </b>{{book['book_author']}}</div>
+                        <div><b>Price: $</b>{{book['book_price']}}</div>
+                        <div><b>Publisher: </b>{{book['book_publisher']}}</div>
+                        <div><b>Description: </b>{{book['book_description']}}</div>
+                        <div class="row">
+                            {%if session['role']=='librarian'%}
+                                {%set location = get_location_by_librarian_id(librarian_id)%}
+                                    <div><b>Location: </b>{{location['location_name']}}</div>
+                                    <div class="col-md-5 p-2">
+                                        <a href="/add_book_copies?book_id={{book['_id']}} ">
+                                            <input type="submit" value="Add  Copies" class="btn btn-primary w-100 text-center"><br>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-5 p-2">
+                                        <a href="/view_book_copies?book_id={{book['_id']}}">
+                                            <input type="submit" value="View Copies" class="btn btn-success w-100 text-center"><br>
+                                        </a>
+                                    </div>
+                            {%endif%}
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+  </div>

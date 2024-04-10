@@ -1,0 +1,26 @@
+{% include "librarian_head.html" %}
+{% for book in books: %}
+<div class="card mt-2 p-2">
+    <div class="text-center"><b>Book Name</b>:{{book['book_name']}}</div>
+    {% for book_copy in book['book_copies'] %}
+    {% set librarian, location = get_librarian_by_librarian_id(book_copy) %}
+    {% if book_copy == str(session["librarian_id"]) %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row p-3">
+                    <label><b>Number Of Copies</b></label>
+                        {% for book_copy_number in book['book_copies'][book_copy] %}
+                        <div class="col-md-3 text-center"><div class="card p-3 mt-2 h5">{{book_copy_number}}</div></div>
+                        {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6 mt-3 p-2">
+                <div><b>Location</b>:{{location['location_name']}}</div>
+                <div class="mt-2"><b>Librarian</b>:{{librarian["name"]}}</div>
+                <div class="mt-2"><b>Librarian Number</b>:{{librarian["phone"]}}</div>
+            </div>
+        </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}

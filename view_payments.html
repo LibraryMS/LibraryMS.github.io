@@ -1,0 +1,31 @@
+{%include "member_head.html"%}
+<div class="container-fluid mt-3 p-11" xmlns:width="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        <div class = col-md-4></div>
+        <div class = col-md-4>
+            <div class="card p-3">
+                <div class="p-3">
+                    <h3 style="text-align:center;">Payment Details</h3>
+                </div>
+                <div>
+                    <label><b>Fine : </b>{{payment['fine']}}</label>
+                </div>
+                <div>
+                    <label><b>Card Number : </b>{{payment['card_number']}}</label>
+                </div>
+                <div>
+                    <label><b>Card Name : </b>{{payment['card_name']}}</label>
+                </div>
+                <div>
+                    <label><b>Card Type : </b>{{payment['card_type']}}</label>
+                </div>
+                <div>
+                    <label><b>Cvv : </b>{{payment['cvv']}}</label>
+                </div>
+                <div>
+                    <label><b>Expiry Date : </b>{{payment['expiry_date']}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

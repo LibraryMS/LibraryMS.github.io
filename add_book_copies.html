@@ -1,0 +1,54 @@
+{% include "librarian_head.html" %}
+<div class="container p-3">
+    <div class="row">
+        <div class="card">
+                <div class="col-md-12">
+                    <div class="mt-2 p-2">
+                        <form action="add_book_copy1">
+                            <input type="hidden" name="book_id" value="{{book_id}}">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div>
+                                        <label>Enter Number Of Copies</label>
+                                        <input type="search" id="no_of_copies" name="no_of_copies" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-7 mt-4"><input type="submit" value="Add"></div>
+                            </div>
+                                <div id="copies">
+                                </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+
+<!--<script>-->
+<!--    $(document).ready(function(){-->
+<!--        $("#no_of_copies").on("keyup",function(){-->
+<!--            let no_of_copies = $("#no_of_copies").val()-->
+<!--            if(no_of_copies!=""){-->
+<!--                let copies=`<div class="container"><div class="row ">`-->
+<!--                for(let i=1;i<=no_of_copies;i++)-->
+<!--                {-->
+<!--                    copies=copies+`<div class="col-md-3">-->
+<!--                         <div class="card mt-2 p-3">-->
+<!--                                <label>Copy ${i}</label>-->
+<!--                                <input type="text" name="copy${i}" required id="copy" class="form-control">-->
+<!--                         </div>-->
+<!--                    </div>`-->
+
+<!--                }-->
+<!--                copies= copies+`</div></div>`-->
+<!--                console.log(copies)-->
+<!--                $("#copies").html(copies)-->
+
+<!--            }-->
+<!--            else{-->
+<!--                $("#copies").html("")-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->

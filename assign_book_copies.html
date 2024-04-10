@@ -1,0 +1,46 @@
+{% include "librarian_head.html" %}
+<style>
+    [type="radio"] {
+        display: none;
+    }
+    [type="radio"]:checked ~ label{
+        background-color: #6c5ce7;
+        color: white;
+    }
+</style>
+<form action="assign_book_copy1">
+    <div>
+        <input type="hidden" name="book_id" value="{{book_id}}">
+    </div>
+    <div>
+        <input type="hidden" name="transaction_id" value="{{transaction_id}}">
+    </div>
+    {% for book in books: %}
+        <div class="row">
+            {% for book_copy in book['book_copies'] %}
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+            <div class="card mt-2 p-2 text-center">
+               <label><b>Number Of Copies</b></label>
+                    <div class="row">
+                    {% for book_copy_number in  book['book_copies'][book_copy]%}
+                        {% set is_book_available = check_is_book_available(book['_id'],book_copy_number,book_copy) %}
+                        {% if is_book_available: %}
+                        <div class="col-md-4 p-4">
+                            <div>
+                               <input type="radio" id="{{book_copy_number}}"  name="book_copy" value={{book_copy_number}}>
+                                <label for="{{book_copy_number}}" class="card p-2">{{book_copy_number}}</label>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                <div class="text-center"><input type="submit" value="Assign Book Copies" class="btn btn-primary w-50"></div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+</form>
+
+
+
